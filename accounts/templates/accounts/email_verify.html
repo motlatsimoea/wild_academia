@@ -1,0 +1,11 @@
+{% extends "blog/base.html" %}
+{% block content %}
+    <h6 style="padding-top: 4rem;"> 
+        You're almost there... 
+    </h6>
+    <p>
+     Please check your email Inbox or Spam folder to Activate your account! If you did not receive an email, you may have used an invalid email to register.
+
+     Once this is done, you can <strong><a href="{% url 'login' %}">Log in</a></strong>
+    </p>
+{% endblock %}

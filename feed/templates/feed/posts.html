@@ -1,0 +1,39 @@
+{% extends 'blog/base.html' %}
+{% load humanize %}
+{% block content %}
+    <div style="padding-top:3.5rem;">
+        {% for post in posts %}
+            <article>
+                <div class="row justify-content-center">
+                    <div class="col-md-9 ">
+                        <div class="media pb-3 pl-2 shadow-lg p-3 mb-3 post rounded">            
+                          <a class="pt-2" href="{% url 'profile_details' post.author.username %}"><img class=" mr-3 pt-0 rounded-circle" style="object-fit: cover" width=65px height=65px src="{{ post.author.profile.image.url }}"></a>  
+                            <div class="media-body">
+                                <h3><a class="article-title general" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 20px;" href="{% url 'feed-detail' post.pk %}">{{ post.title }}</a></h3>
+                                <text class="float-left font-weight-bold"><a class="text-dark" href="{% url 'profile_details' post.author.username %}">{{ post.author|capfirst }}</a></text>,
+                                <small class="ml-2 font-weight-bold">{{ post.date_posted|naturaltime }}</small>
+                                
+                                <div class="box">
+                                    <p>{{ post.content }}</p>
+                                </div>
+                               
+                                    {% for tag in post.tags.all %}
+                                        <div>
+                                            <a class="general" href="{{ tag.get_absolute_url }}" style="font-size: larger; font-weight: bold;">#{{ tag }}</a>
+                                        </div>   
+                                    {% endfor %}
+                                
+
+                                <div class="row">
+                                    {% for p in post.feedimage_set.all %}                        
+                                        <a href="{{ p.media.url }}"><img class="rounded float-left img-thumbnail" style="object-fit: cover; height: 200px; width: 190px;" src="{{ p.media.url }}" alt="Image Not Found"></a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article> 
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'blog/base.html' %}
+{% load humanize %}
+{% block content %}
+    <div style="padding-top: 3.5rem;">
+        {% for question in questions %}
+            <article>
+                    <div class="row justify-content-center">
+                        <div class="col-md-9 ">
+                                <div class="media pb-3 pl-2 shadow-lg p-3 mb-3 post rounded">            
+                                    <a class="pt-1" href="{% url 'profile_details' question.author.username %}"><img class=" mr-3 mt-2 pt-0 rounded img-fluid" style="object-fit: cover" width=80px height=90px src="{{ question.author.profile.image.url }}"></a>  
+                                    <div class="media-body">
+                                        <h3><a class="article-title general" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 20px;" href="{% url 'post-detail' question.pk %}">{{ question.title }}</a></h3>
+                                        <text class="float-left font-weight-bold"><a class="text-dark" href="{% url 'profile_details' question.author.username %}">{{ question.author|capfirst }}</a></text>,
+                                        <small class="ml-2 font-weight-bold">{{ question.date_posted|naturaltime }}</small>
+                                        
+                                       <div class="mt-2">
+                                        {% for tag in question.tags.all %}
+                                            <a href="{{ tag.get_absolute_url }}" class=" questag ">{{ tag }}</a>
+                                        {% endfor %}
+                                       </div>
+                                            
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+            </article> 
+        {% endfor %}
+    </div>
+    
+{% endblock %}

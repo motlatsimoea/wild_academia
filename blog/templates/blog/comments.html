@@ -1,0 +1,50 @@
+{% load crispy_forms_tags %}
+{% load humanize %}
+
+<!--COMMENTS-->
+	<span class="pr-1 mb-2">{{comments.count }}</span><span style="font-weight: bold;">Answer{{comments|pluralize}}</span>
+	<hr>
+	{% for comment in comments %}
+		<div class="row pt-3 mt-2">
+			<div class="col-md-12">
+				<ul class="list-unstyled">
+					<li class="media pb-4 shadow-lg p-3 mb-3 post rounded">
+						<img class="rounded-circle mr-md-3 mr-sm-1 ml-1" style="object-fit: cover" width=40px height=40px src="{{ comment.user.profile.image.url }}">
+						<div class="media-body pl-0 ml-0">
+							<a class="font-weight-bold" href="#"><strong>{{ comment.user|capfirst }}</strong></a>
+							<small class="text-secondary text-center">{{ comment.timestamp|naturaltime}}</small>
+							<div>
+							{% if request.user == comment.user %}
+								<a href="{% url 'comment-delete' comment.id %}">
+									<i class="fa fa-trash-o" aria-hidden="true"></i>
+								</a>
+							{% endif %}
+							</div>
+							<div class="box">
+								<p class="mathjax-latex" style=" font-family: Arial, Helvetica, sans-serif;">{{ comment.content |safe }}</p>
+							</div>
+						</div>
+					</li>             
+				</ul>
+			</div>
+		</div>
+	{% endfor %}
+<!--COMMENTS-->
+
+
+<!--COMMENT FORM-->
+		<div class="container-fluid pt-3">
+			<form method="post" class="comment-form"  action="{% url 'post-detail' post.pk %}">
+				{% csrf_token %}
+				{{comment_form.media}}
+                {{ comment_form }}  
+				{% if request.user.is_authenticated %}              
+					<input type="submit" value="reply" class="repbtn">
+				{% else %}
+					<input type="submit" value="Reply" class="btn btn-outline-primary" disabled>
+				{% endif %}
+			</form>
+		</div>		
+<!--COMMENT FORM-->
+
+

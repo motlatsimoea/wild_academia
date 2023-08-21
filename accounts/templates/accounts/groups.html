@@ -1,0 +1,45 @@
+
+{% if profile %}
+    <section class="col-md-6 col-lg-4">  
+        <div class="bg-white mb-2">  
+            <div class="d-flex py-1 px-2 flex-row justify-content-start align-items-center">
+                <img class=" rounded-circle" src="{{ profile.image.url }}" style="object-fit: cover" width=60px height=60px>         
+                <div class="d-flex flex-column align-items-middle ml-2 font-weight-bold">           
+                    <span>{{profile.user.username| capfirst}}</span>
+                    <span>{{profile.institute}}</span>
+                    <span>{{profile.user.email}}</span> 
+                </div>
+            </div>
+            <hr>
+            <ul id = "subjects" class=" justify-content-start px-0 mx-0 font-weight-bold">   
+
+                {% for subject in profile.Subjects %}
+                    <li style="list-style-type: none;">&nbsp; {{subject}}</li>
+                {% empty %}
+                    <li style="list-style-type: none;">&nbsp;</li>
+                {% endfor %}
+            </ul>
+            
+            <a href="{{ profile.get_absolute_url }}" class="probtn text-white">view profile</a>  
+        </div>               
+    </section>    
+
+
+{% else %}
+    
+    <div class="card">
+        <div class="card-body">
+            
+            {% if query %}
+                <p class="card-text">
+                    There were not results matching your search "{{query}}".
+                </p>
+            {% else %}
+            <h2 class="card-title">
+                Nothing to search yet...
+            </h2>
+            {%endif %}
+        </div>
+    </div>
+
+{% endif %}

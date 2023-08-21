@@ -1,0 +1,214 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+    
+   
+    <!-- FilePond -->
+    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+    
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'blog/gallery.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
+    
+    
+  
+    
+	{% if title %}
+        <title>wild academia - {{ title }}</title>
+    {% else %}
+        <title>wild academia</title>
+
+    {%endif %}
+    <link rel="shortcut icon" href="https://fmat-files.s3.us-east-2.amazonaws.com/logo/favicon.jpg" type="image/x-icon">
+</head>
+<body>
+    
+      <header>
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+          <div class="container">
+            <a class="navbar-brand mr-4" href="{% url 'questions' %}"><img class="rounded img-fluid" width="60" src="https://fmat-files.s3.us-east-2.amazonaws.com/logo/home.png" alt="WildAcademia"></a>
+
+            {% if not user.is_authenticated %}
+              <a class="navbar-brand mr-4 text-white" style="font-weight: bold;" href="{% url 'about' %}">about</a>
+              <a class="nav-item nav-link text-white" style="padding-right: 20px; font-weight: bold;" href="{% url 'posts' %}">posts</a>
+            {% else %}
+              <a class="nav-item nav-link text-white" style=" font-weight: bold;" href="{% url 'information' %}">info</a>
+            {% endif %}
+
+            
+            
+            {% if user.is_authenticated %}
+              <span class="d-block d-sm-block d-md-block d-lg-none nav-link"> 
+                <a class="nav-item mr-auto text-white" href="{% url 'show-notifications' %}"><i class="fa   fa-bell fa-lg" aria-hidden="true"></i>
+                  {% if count_notifications %}
+                  <span class="badge">{{ count_notifications }}</span>
+                  {% endif %}
+                </a>
+              </span>
+              {% endif %}
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+       
+              <span class="navbar-toggler-icon"></span>
+              </button>
+
+            <div class="collapse navbar-collapse" id="navbarToggle">
+              <div class="navbar-nav mx-auto">
+                {% if user.is_authenticated %}
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fa fa-users fa-lg text-white" aria-hidden="true"></i>
+                    </a>
+
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <!-- <a class="dropdown-item" href="#">Tutors</a> -->
+                        <!-- <div class="dropdown-divider"></div> -->
+
+                        <a class="dropdown-item" href="{% url 'mentors' %}">Mentors</a>
+                        <div class="dropdown-divider"></div>
+
+                        <a class="dropdown-item" href="{% url 'students' %}">Students</a> 
+                        <div class="dropdown-divider"></div>
+
+                        <a class="dropdown-item" href="{% url 'mentor_teacher' %}">Mentor&Teacher</a> 
+                        <div class="dropdown-divider"></div>
+
+                        <a class="dropdown-item" href="{% url 'student_mentor' %}">Student&Mentor</a> 
+                        <div class="dropdown-divider"></div>
+
+                        <a class="dropdown-item" href="{% url 'mentor_mentee' %}">Mentor&Mentee</a> 
+                    </div>
+                  </li>
+
+                  <a class="nav-item nav-link text-white" style="padding-right: 20px; font-weight: bold;" href="https://wildacademia.org/information/basic-user-guidelines">user guide</a>
+                
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fa fa-plus fa-lg text-white" aria-hidden="true"></i>
+                    </a>
+
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{% url 'create_feed' %}">New Post</a>
+                          <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'create_post' %}">Ask Question</a>   
+                    </div>
+                  </li>
+                  <a class="nav-item nav-link text-white" style="padding-right: 20px; font-weight: bold;" href="{% url 'posts' %}">posts</a>
+                  <a class="nav-item nav-link text-white" style="padding-right: 20px; font-weight: bold;" href="{% url 'feed-stream' %}">following</a>   
+                {% endif %}
+
+              
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" style="padding-right: 20px;" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fa fa-tags fa-lg text-white" aria-hidden="true"></i>
+                    </a>
+
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      {% for tag in tags %}
+                        <a class="dropdown-item" href="{{ tag.get_absolute_url }}">{{ tag.title }}</a>
+                        <div class="dropdown-divider"></div>
+                      {% endfor %}
+                    </div>
+                </li>
+                
+              </div>
+              
+            {% if user.is_authenticated %}
+              <span class="d-lg-block d-none nav-link"> 
+                <a class="nav-item mr-auto text-white" href="{% url 'show-notifications' %}"><i class="fa fa-bell fa-lg" aria-hidden="true"></i>
+                  {% if count_notifications %}
+                  <span class="badge">{{ count_notifications }}</span>
+                  {% endif %}
+                </a>
+              </span>
+            {% endif %}
+              <!-- Navbar Right Side -->
+              <div class="navbar-nav">
+                {% if user.is_authenticated %}
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-white" style="font-weight: bold;" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     {{user.username|capfirst}}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item" href="{% url 'profile_details' user.username %}">Profile</a>
+                      <a class="dropdown-item" href="{% url 'password_change' %}">Reset Password</a>
+                      <a class="dropdown-item" href="{% url 'account_delete' user.pk %}">Deactivate Account</a>
+                      <a class="dropdown-item" href="#">Privacy Policy</a> 
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="{% url 'logout' %}">logout</a>
+                    </div>
+                  </li>
+                {% else %}
+                  <a class="nav-item nav-link text-white" href="{% url 'login' %}">login</a>
+                  <a class="nav-item nav-link text-white" href="{% url 'register' %}">Register</a>
+                {% endif %} 
+              </div>
+            </div>
+          </div>
+        </nav>
+    </header>
+
+    <main class="container pt-3 mt-3">
+         <div class="row">
+          <div class="col-md">
+            {% if messages %}
+              {% for message in messages %}
+                <div class="alert {{ message.tags }}" style="padding-top: 3.5rem;">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+            {% block content %}{% endblock %}
+          </div> 
+          
+        </div>
+      </main>
+      <!-- <footer class="container-fluid bg-warning">
+        <div class="row">
+          <div class="col text-center">
+            <p>&copy; 2021</p>
+          </div>
+        </div>
+        
+      </footer> -->
+
+    
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"> </script>
+<!-- jQuery UI !-->
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<script src="https://use.fontawesome.com/15f5815e3b.js"></script>
+
+
+<!--FilePond -->
+<script src="https://unpkg.com/filepond/dist/filepond.js"></script>
+<script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
+<script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/28.0.0/classic/ckeditor.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_SVG"></script>
+
+
+<script src="{% static 'js/gallery.js' %}"></script>
+<script src="{% static 'js/java.js' %}"></script>
+<script>
+  CKEDITOR.replace('editor');
+</script>
+
+</body>
+</html>
+
+

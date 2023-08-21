@@ -1,0 +1,88 @@
+{% extends 'blog/base.html' %}
+
+
+{% block content %}
+    <div style="margin-top: 3.5rem; padding-bottom: 4rem;">
+        <h3 class="border-bottom border-warning">About Us</h3>
+        <p class="box pt-3" style="font-family: Arial, Helvetica, sans-serif;">
+           Wild Academia(Wild-A) is an online platform that helps students find academic and career related support. We create a network between student – student, student – tutor/teacher, and student – mentor. This network allows the:
+        </p>
+
+        
+        <ul class="ml-2 mb-3" style="font-family: Arial, Helvetica, sans-serif;">
+            <li class="mb-3">
+                Student a platform to find tutors, and possibly even tutors within their area;
+            </li>
+
+            <li class="mb-3">
+                Students themselves to help each other with subjects they might be struggling to understand. Students can post questions for discussion with other students;
+            </li>
+
+            <li class="mb-3">
+                Individuals (teachers, graduates, and people who have completed high school) with an interest in tutoring to find students to assist;
+            </li>
+
+            <li class="mb-3">
+                Professionals in different career fields to share career advice, information about their professions, and to mentor prospective university students.
+            </li>
+        </ul>
+        
+        <div class="pt-3 mt-3">
+            <h5 class="font-weight-bold">
+                Our founding story
+            </h5>
+            <p style="font-family: Arial, Helvetica, sans-serif; font-size: 16px;">
+                Wild-A was created in response to online learning during the Covid-19 pandemic.
+                At the peak of the pandemic, students were forced to study from home and through social media platforms. 
+                This meant less physical contact with other students. 
+                It also meant that some students would struggle and need extra help as they would struggle to adjust to the dynamics of non-face-to-face learning. 
+                As a result, Wild-A was conceived. 
+            </p>
+            <p style="font-family: Arial, Helvetica, sans-serif; font-size: 16px;">
+               Wild-A is also a response to limited realistic information on how to join certain professions.
+                Students’ view of different professions can be quite limited and unrealistic. 
+                As a result some regret their career choices, some later learn of career choices that would have best suit them, 
+                and some only realised while in University just how much it takes to become that professional. 
+                So why not equip them with all this information before they make their choice?
+                 Why not help them make an informed decision? 
+            </p>
+        </div>
+        
+        <div class="pt-3 mt-3">
+            <h5 class="font-weight-bold">
+                Our features
+            </h5>
+            <ul class="ml-2" style="font-family: Arial, Helvetica, sans-serif;">
+                <li class="mb-3">
+                    Register an account with an email address;
+                </li>
+
+                <li class="mb-3">
+                    Create a profile as either a student, tutor/teacher, or mentor;
+                </li>
+                <li class="mb-3">
+                    Find and follow other students, tutors, and mentors in your area and other areas;
+                </li>
+                <li class="mb-3">
+                    Create a post whether to share thoughts, motivation, resources, or information about learning and career related; 
+                </li>
+                <li class="mb-3">
+                    Ask a question and create a tag based on the subject most related to your question e.g. Mathematics, Trigonometry;
+                </li>
+                <li class="mb-3">
+                    Create tags for questions and posts for others to easily find e.g. Mathematics resources, Psychology career etc;
+                </li>
+                <li class="mb-3">
+                    And more....
+                </li>
+            </ul>
+        </div>
+
+        <div class="border-top border-warning">
+            <p class="text-muted">
+                Impressive right? <a class="ml-2" href="{% url 'register' %}">Register Now!</a>
+            </p>
+        </div>
+    </div>
+    
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends 'blog/base.html' %}
+{% load humanize %}
+
+{% block content %}
+    <div style="margin-top: 3.5rem; margin-bottom: 2.5rem;">
+      <h2>Notifications</h2>
+        {% for notification in notifications %}
+            
+            <!--LIKED-->
+            {% if notification.notification_type == 1 %}
+                <li style="list-style: none; padding-top: 4rem;">
+                  <div>
+                      <div class="col-lg-3 col-sm-3 col-3 pt-1">
+                        <img src="{{ notification.sender.profile.image.url }}" class="rounded-circle" style="object-fit: cover" width=64px height=64px>
+                      </div>
+
+                      <div class="float-left" style="display: inline;">
+                        <a href="{% url 'profile_details' notification.sender.username %}"><strong style="color: #4B0098;">{{ notification.sender.profile.user.username }}</strong></a>
+                        <i class="fa fa-thumbs-up" aria-hidden="true" style="color: #4B0098;"></i> your post: <a style="font-weight: bold;" href="{% url 'feed-detail' notification.feed.id %}">{{ notification.feed.title }}</a>
+                        <div>
+                          <strong><small class="text-dark">{{ notification.date|naturaltime }}</small></strong>
+                        </div>
+                      </div>    
+                  </div>
+                </li>
+                <br><br><hr>
+            {% endif %}
+
+            <!--COMMENT-->
+            {% if notification.notification_type == 2 %}
+              <li style="list-style: none; padding-top: 4rem;">
+                  <div>
+                      <div class="col-lg-3 col-sm-3 col-3 pt-1">
+                          <img src="{{ notification.sender.profile.image.url }}" class="rounded-circle" style="object-fit: cover" width=64px height=64px>
+                      </div>    
+                      <div class="float-left" style="display: inline;">
+                        <a href="{% url 'profile_details' notification.sender.username %}"><strong style="color: #4B0098;">{{ notification.sender.profile.user }}</strong></a> 
+                          Commented on your Question: <a style="font-weight: bold;" href="{% url 'post-detail' notification.post.id %}">{{ notification.post.title }}</a> 
+                          <div>
+                            <strong><small class="text-dark">{{ notification.date|naturaltime }}</small></strong>
+                          </div> 
+                      </div>    
+                  </div>
+              </li>
+              <br><br><br><br><br><hr>
+            {% endif %}
+
+            <!--FOLLOWED-->
+            {% if notification.notification_type == 3 %}
+                <li style="list-style: none; padding-top: 4rem;">
+                  <div>
+                      <div class="col-lg-3 col-sm-3 col-3 pt-1">
+                        <img src="{{ notification.sender.profile.image.url }}" class="rounded-circle" style="object-fit: cover" width=64px height=64px>
+                      </div>    
+                      <div class="float-left" style="display: inline;">
+                        <a href="{% url 'profile_details' notification.sender.username %}"><strong style="color: #4B0098;">{{ notification.sender.profile.user.username }}</strong></a>
+                        <i class="fa fa-user-plus" aria-hidden="true"></i> is now Following you
+                        <div>
+                          <strong><small class="text-dark">{{ notification.date|naturaltime }}</small></strong>
+                        </div>
+                      </div>    
+                  </div>
+                </li>
+                <br><br><hr>
+            {% endif %}
+
+            
+            <!--OPINION-->
+            {% if notification.notification_type == 4 %}
+              <li style="list-style: none; padding-top: 4rem;">
+                  <div>
+                      <div class="col-lg-3 col-sm-3 col-3 pt-1">
+                          <img src="{{ notification.sender.profile.image.url }}" class="rounded-circle" style="object-fit: cover" width=64px height=64px>
+                      </div>    
+                      <div class="float-left" style="display: inline;">
+                        <a href="{% url 'profile_details' notification.sender.username %}"><strong style="color: #4B0098;">{{ notification.sender.profile.user }}</strong></a> 
+                          Commented on your post: <a style="font-weight: bold;" href="{% url 'feed-detail' notification.feed.id %}">{{ notification.feed.title }}</a> 
+                          <div>
+                            <strong><small class="text-dark">{{ notification.date|naturaltime }}</small></strong>
+                          </div>
+                      </div>    
+                  </div>
+              </li>
+              <br><br><hr>
+            {% endif %}
+
+            <!--REPLY-->
+            {% if notification.notification_type == 5 %}
+              <li style="list-style: none; padding-top: 4rem;">
+                  <div>
+                      <div class="col-lg-3 col-sm-3 col-3 pt-1">
+                          <img src="{{ notification.sender.profile.image.url }}" class="rounded-circle" style="object-fit: cover" width=64px height=64px>
+                      </div>    
+                      <div class="float-left" style="display: inline;">
+                        <a href="{% url 'profile_details' notification.sender.username %}"><strong style="color: #4B0098;">{{ notification.sender.profile.user }}</strong></a> 
+                          Replied to your comment on post: <a style="font-weight: bold;" href="{% url 'feed-detail' notification.feed.id %}">{{ notification.feed.title }}</a> 
+                          <div>
+                            <strong><small class="text-dark">{{ notification.date|naturaltime }}</small></strong>
+                          </div>
+                      </div>    
+                  </div>
+              </li>
+              <br><br><br><hr>
+            {% endif %}
+
+        {% endfor %}
+
+    </div>
+    
+{% endblock %}

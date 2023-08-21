@@ -1,0 +1,7 @@
+from django.urls import path
+from .views import ShowNotifications
+
+
+urlpatterns = [
+    path('', ShowNotifications, name='show-notifications'),
+]

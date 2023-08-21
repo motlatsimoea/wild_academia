@@ -1,0 +1,41 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+
+<!--MENU SECTION-->
+    <div class="menu-wrap mt-3">
+        <a href="{% url 'information' %}">
+            <div class="logo">
+                Information Centre
+            </div>
+        </a>
+        
+        <div class="dropdown pr-3">
+            <button class="repbtn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Categories
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {% for category in categories %}
+                    <a class="dropdown-item" href="{% url 'category' category.slug %}">{{category.title}}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+<!-- END MENU SECTION-->
+<div class="row" style="padding-top: 11.0rem;">
+    {% for article in articles %}
+    <div class="col-12 mb-2">
+        <article class="pt-2 pb-2 post" style="padding-left: 1%; text-align: justify; padding-right: 1%;">
+            <img src="{{ article.picture.url }}" width="100%" height="300px" alt="">
+            <div class="media-body phone-body">
+                <div class="article-metadata">
+                    <h5 class="pt-3 general">{{article.author }}</h5>
+                    <small class="font-weight-bold">{{article.date_posted}}</small>
+                </div>
+                <a class="article-title general" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 20px;" href="{% url 'article_details' article.slug %}"><h2>{{article.title}}</h2></a> 
+                <p class="article-content show-read-more">{{ article.content|truncatechars:150 |safe  }}</p>
+            </div>  
+        </article>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

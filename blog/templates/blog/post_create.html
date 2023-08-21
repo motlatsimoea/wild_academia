@@ -1,0 +1,21 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+    <div class="row" style="padding-top: 4.5rem;"> 
+        <div class="col-12">
+            <form enctype="multipart/form-data" method="POST">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">New Question</legend>
+                        {{form.media}}
+                        {{ form|crispy }}
+                </fieldset>
+                <div class="form-group">
+                    <button class="repbtn" type="submit">Ask</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

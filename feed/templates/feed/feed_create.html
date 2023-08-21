@@ -1,0 +1,89 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div style="padding-top: 4rem;">
+    
+    <input type="file" multiple>
+    <label style="font-weight: bold;">Title</label>
+    <input type="text" id="title" class="form-control">
+    <label class="pt-1" style="font-weight: bold;">Content</label>
+    <textarea id="description" name="editor" cols="30" rows="5" class="form-control" placeholder="Share some Knowledge..."></textarea>
+    
+    <label>#Tags</label>
+    <input type="text" id="hashes" class="form-control" placeholder="multiple tags separated by ','">
+        
+    <button type="button" id="savebtn" class="repbtn mt-1">Post</button>
+</div>
+    
+
+
+
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var files = [] 
+                FilePond.registerPlugin(FilePondPluginFileValidateSize);
+                FilePond.registerPlugin(FilePondPluginFileValidateType);
+                FilePond.setOptions({
+                    allowMultiple: true,
+                    maxFiles: 4,
+                    maxFileSize: '5MB'
+                })
+                const inputElement = document.querySelector('input[type="file"]');
+                const alertBox = document.getElementById('alert-box');
+                const pond = FilePond.create( inputElement, {
+                    acceptedFileTypes:['image/png', 'image/jpeg'],
+                    onaddfile: (err, fileItem) => {
+                        if(!err) {
+                            files.push(fileItem.file)
+                            console.log(files)
+                        }
+                        
+                        
+                    },
+                    onremovefile: (err, fileItem) => {
+                        const index = files.indexOf(fileItem.file)
+                        if (index > -1) {
+                            files.splice(index, 1)
+                        }
+                        console.log(files)
+                    }
+                } );
+
+                var formData = new FormData();
+                $(document).on('click', '#savebtn', function(e) {
+                    formData.append('length', files.length)
+                    formData.append('title', $('#title').val())
+                    formData.append('content', $('#description').val())
+                    formData.append('tags', $('#hashes').val())
+                    for (var i = 0; i < files.length; i++) {
+                        formData.append('media' + i, files[i])
+                    }
+                    formData.append('csrfmiddlewaretoken', '{{ csrf_token }}')
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '{% url "create_feed" %}',
+                        data: formData,
+                        cache: false,
+                        processData: false,
+                        contentType:false,
+                        enctype: 'multipart/form-data',
+                        success: function (){
+                            window.location.href = '{% url "posts" %}'
+                            alertBox.innerHTML = `<div class="alert alert-primary" role="alert">
+                                                    This is a primary alert—check it out!
+                                                </div>`
+                        },
+                        error: function (xhr, errmsg, err){
+                            console.log(xhr.status + ":" + xhr.responseText)
+
+                        }
+
+                    })
+                })
+            })
+        
+        </script>   
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<style>
+  body, html {
+    background-color: #a8abad;;
+  }
+</style>
+
+    <div style="padding-top: 4rem;"> 
+      <div class="row">
+        <div class="col-sm-12">
+          <form class="example" method="get">
+            <input type="text" placeholder="Search.." name="s" id="id_s">
+            <button style="background-color: #4B0098;" ><i class="fa fa-search"></i></button>
+          </form>
+        </div>
+      </div>
+
+      
+      <section class="row pt-3">    
+        {% if profiles %}
+              
+          {% for student in profiles %}  
+            {% include 'accounts/groups.html' with profile=student %}  
+          {% endfor %}
+
+        {% else %}        
+          {% include 'accounts/groups.html' with query=query %}
+        {% endif %} 
+      </section>                
+    </div>   
+     
+{% endblock %}
+

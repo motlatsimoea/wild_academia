@@ -1,0 +1,74 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% block content %} 
+    <style type="text/css">
+        body {
+            padding-bottom: 1rem;
+        }
+    </style>
+        <div class="row" style="padding-top: 4rem;">
+            <h5 class="ml-3">-------{{tag.title}}--------</h5>
+        </div>
+
+
+        {% if posts %}
+            <div class="row justify-content-center pt-3 mt-3">
+                <div class="col-md-9">
+                    <h3>Questions Relating to the tag</h3>
+                </div>   
+            </div>
+            
+
+            {% for post in posts %}
+                <article>
+                        <div class="row justify-content-center">
+                            <div class="col-md-9 ">
+                                    <div class="media mt-5 pb-3 pl-2 shadow-lg p-2 post rounded">            
+                                    <a href="{% url 'profile_details' post.author.username %}"><img class=" mr-3 pt-0 rounded-circle" style="object-fit: cover" width=80px height=80px src="{{ post.author.profile.image.url }}"></a>  
+                                        <div class="media-body">
+                                            <h3><a class="article-title" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold;" href="{% url 'post-detail' post.pk %}">{{ post.title }}</a></h3>
+                                            <text class="float-left font-weight-bold"><a class="text-dark" href="{% url 'profile_details' post.author.username %}">{{ post.author|capfirst }}</a></text>,
+                                            <small class=" ml-2 font-weight-bold">{{ post.date_posted|naturaltime }}</small> 
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                </article> 
+            {% empty %}
+                <h3>No Questions relating to this tag</h3>
+            {% endfor %}
+        {% endif %}
+
+
+        {% if feeds %}
+            <div class="row justify-content-center" style="margin-top: 10rem;">
+                <div class="col-md-9">
+                    <h3>Posts Relating to the tag</h3>
+                </div>   
+            </div>
+
+            {% for feed in feeds %}
+                <article>
+                    <div class="row justify-content-center">
+                        <div class="col-md-9 ">
+                            <div class="media mt-5 pb-3 pl-2 shadow-lg p-2 post rounded">            
+                                <a href="{% url 'profile_details' feed.author.username %}"><img class=" mr-3    pt-0 rounded-circle" style="object-fit: cover" width=80px height=80px src="{{ feed.author.profile.image.url }}">
+                                </a>  
+                                <div class="media-body">
+                                    <h3><a class="article-title" style="font-family: Arial, Helvetica, sans-serif; font-weight: bold;" href="{% url 'feed-detail' feed.pk %}">{{ feed.title }}</a></h3>
+                                    <text class="float-left font-weight-bold"><a class="text-dark" href="{% url 'profile_details' feed.author.username %}">{{ feed.author|capfirst }}</a></text>,
+                                    <small class="ml-2 font-weight-bold">{{ feed.date_posted|naturaltime }}</small> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article> 
+            
+            {% empty %}
+                <h3 class="shadow-lg p-2 post rounded">No Posts relating to the tag</h3>
+            {% endfor %}
+        {% endif %}
+        
+        
+{% endblock %}
